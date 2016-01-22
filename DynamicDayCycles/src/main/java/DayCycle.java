@@ -12,7 +12,7 @@
  * in seconds. This relies on the server running at 20 ticks per second. Any other tickrate causes the time to be
  * faulty when converted from ticks to seconds.
  *
- * @author: Markus Bergland
+ * @author: Bergland
  * @version 1.0
  * @since 2016-01-22
  */
