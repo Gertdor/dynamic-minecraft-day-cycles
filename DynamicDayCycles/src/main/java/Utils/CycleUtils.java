@@ -1,3 +1,5 @@
+package Utils;
+
 /**
  *A utility class for approximating values related to length of a day
  * @author Gertdor
