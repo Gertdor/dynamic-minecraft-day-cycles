@@ -1,3 +1,5 @@
+package Utils;
+
 /**
  *A utility class for approximating values related to length of a day.
  * @author Gertdor
@@ -31,7 +33,7 @@ public class CycleUtils{
      * @param day Day of the year. day 1 is 1st of january. Day 365 is 31th of december.
      * @return sun declination in degrees between -23.5 and 23.5
      */
-    public double approximateSunDeclination(int day){
+    public static double approximateSunDeclination(int day){
         int x = (day-79)%365; //days since vernal equinox that is approximated to march 20
                             //Leap years are not taken into account.
         return(23.5*Math.sin((x/365)*Math.PI));

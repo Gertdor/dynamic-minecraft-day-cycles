@@ -1,4 +1,5 @@
-import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitTask;
 
 /** Controls the time flow of a Minecraft day through using one of three methods:
  * <ul>
@@ -26,34 +27,106 @@ import org.bukkit.Server;
  */
 public class CycleController {
 
-    private final Server server;
+    private final World world;
     private DayCycle today;
-    private DayCycle tomorrow;
     private CycleState state;
     private int currentTime;
+    private BukkitTask runner;
 
-    private double cycleMultiplier = 1;
+    private double cycleMultiplier;
 
-    public CycleController(Server server){
-        this.server = server;
-        state = CycleState.MULTIPLIER;
+    private int dayTime;
+    private int nightTime;
+    private int duskTime;
+    private int dawnTime;
+
+    private double longitude;
+    private int day;
+
+    /** Creates a new cycle controller object with a specified server to run on.
+     * Defaults the state to a multiplier state with a time multiplier of 1.
+     * @param world The world that this controller applies to.
+     *
+     * @since 0.1
+     */
+    public CycleController(World world){
+        this.world = world;
+        setStateMultiplier(1);
     }
 
+    /** Sets the current controller state to a time multiplier state with a specified multiplier.
+     *
+     * @param cycleMultiplier The time multiplier to be used.
+     *
+     * @since 0.1
+     */
     public void setStateMultiplier(double cycleMultiplier){
         state = CycleState.MULTIPLIER;
         this.cycleMultiplier = cycleMultiplier;
     }
 
+    /** Sets the current cycle state to a specified day state with all parts individually defined.
+     *
+     * @param dayTime The day time in seconds.
+     * @param nightTime The night time in seconds.
+     * @param duskTime The dusk time in seconds.
+     * @param dawnTime The dawn time in seconds.
+     *
+     * @since 0.1
+     */
     public void setStateDefined(int dayTime, int nightTime, int duskTime, int dawnTime){
         state = CycleState.DEFINED;
+        this.dayTime = dayTime;
+        this.nightTime = nightTime;
+        this.duskTime = duskTime;
+        this.dawnTime = dawnTime;
     }
 
-    public void setStateGenerated(double longitude, int day){
+    /** Sets the current cycle state to a procedurally generated cycle based on a specific longitude and a day.
+     * This also takes in a cycle multiplier to multiply the length of the day with.
+     *
+     * @param longitude The latitude to base our cycles on.
+     * @param day The start day of our generated cycles.
+     * @param cycleMultiplier The time multiplier to be used.
+     *
+     * @since 0.1
+     */
+    public void setStateGenerated(double longitude, int day, int cycleMultiplier){
         state = CycleState.GENERATED;
+        this.longitude = longitude;
+        this.day = day;
+        this.cycleMultiplier = cycleMultiplier;
     }
 
 
+    /** Gets the DayCycle for the next day, through one of the three methods. If using the generated cycle increases
+     * the day count by one as well.
+     *
+     * @return Tomorrow's cycle day with
+     */
+    public DayCycle getTomorrow(){
+        switch (state){
+            case MULTIPLIER:
+                int calcDayTime = (int) (600 * cycleMultiplier);
+                int calcNightTime = (int) (480 * cycleMultiplier);
+                int calcDuskTime = (int) (90 * cycleMultiplier);
+                int calcDawnTime = (int) (90 * cycleMultiplier);
+                return (new DayCycle(calcDayTime, calcNightTime, calcDuskTime, calcDawnTime));
+            case DEFINED:
+                return (new DayCycle(dayTime,nightTime,duskTime,dawnTime));
+            case GENERATED:
+                break;
+        }
+
+        //TODO: Fix case where none are present.
+        return null;
+    }
+
+    /** Enum to symbolise the three states that a time cycle can be calculated, either through a multiple of the
+     * standard Minecraft time, a defined time for the whole cycle, or with a generated cycle from a place and time.
+     */
     private enum CycleState{
         MULTIPLIER, DEFINED, GENERATED;
     }
+
 }

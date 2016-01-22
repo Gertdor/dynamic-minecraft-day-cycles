@@ -148,6 +148,6 @@ public class DayCycle {
      * @since 1.0
      */
     public int getCycleLength(){
-        return getDawnLength() + getNightLength() + getDuskLength() + getDawnLength();
+        return getDayLength() + getNightLength() + getDuskLength() + getDawnLength();
     }
 }
