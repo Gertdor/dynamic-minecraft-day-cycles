@@ -1,4 +1,5 @@
 import org.bukkit.Server;
+import org.bukkit.World;
 
 /** Controls the time flow of a Minecraft day through using one of three methods:
  * <ul>
@@ -27,6 +28,7 @@ import org.bukkit.Server;
 public class CycleController {
 
     private final Server server;
+    private final World world;
     private DayCycle today;
     private DayCycle tomorrow;
     private CycleState state;
@@ -44,10 +46,14 @@ public class CycleController {
 
     /** Creates a new cycle controller object with a specified server to run on.
      * Defaults the state to a multiplier state with a time multiplier of 1.
-     * @param server
+     * @param server The server to run on.
+     * @param world The world that this controller applies to.
+     *
+     * @since 0.1
      */
-    public CycleController(Server server){
+    public CycleController(Server server, World world){
         this.server = server;
+        this.world = world;
         setStateMultiplier(1);
     }
 
@@ -96,6 +102,9 @@ public class CycleController {
     }
 
 
+    /** Enum to symbolise the three states that a time cycle can be calculated, either through a multiple of the
+     * standard Minecraft time, a defined time for the whole cycle, or with a generated cycle from a place and time.
+     */
     private enum CycleState{
         MULTIPLIER, DEFINED, GENERATED;
     }
