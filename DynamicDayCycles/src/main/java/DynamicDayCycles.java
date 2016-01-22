@@ -10,6 +10,6 @@ public final class DynamicDayCycles extends JavaPlugin{
     }
     @Override
     public void onDisable(){
-        
+
     }
 }
