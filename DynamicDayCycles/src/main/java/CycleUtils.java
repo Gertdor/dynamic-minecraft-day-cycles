@@ -10,7 +10,7 @@ public class CycleUtils{
          * @param latitude latitude in degrees. use negative values for south
          * @return the length in seconds of the day or -1 if incorrect values
          */
-    public int calculateDayLength(double sunDeclination, double latitude){
+    public static int calculateDayLength(double sunDeclination, double latitude){
         if(Math.abs(sunDeclination)>23.5 || Math.abs(latitude)>90){
             throw new IllegalArgumentException("arguments not within range");
         }
@@ -29,7 +29,7 @@ public class CycleUtils{
      * @param day Day of the year. day 1 is 1st of january. Day 365 is 31th of december.
      * @return sun declination in degrees between -23.5 and 23.5
      */
-    public double approximateSunDeclination(int day){
+    public static double approximateSunDeclination(int day){
         int x = (day-79)%365; //days since vernal equinox that is approximated to march 20
                             //Leap years are not taken into account.
         return(23.5*Math.sin((x/365)*Math.PI));
