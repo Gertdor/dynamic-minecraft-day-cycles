@@ -32,24 +32,67 @@ public class CycleController {
     private CycleState state;
     private int currentTime;
 
-    private double cycleMultiplier = 1;
+    private double cycleMultiplier;
 
+    private int dayTime;
+    private int nightTime;
+    private int duskTime;
+    private int dawnTime;
+
+    private double longitude;
+    private int day;
+
+    /** Creates a new cycle controller object with a specified server to run on.
+     * Defaults the state to a multiplier state with a time multiplier of 1.
+     * @param server
+     */
     public CycleController(Server server){
         this.server = server;
-        state = CycleState.MULTIPLIER;
+        setStateMultiplier(1);
     }
 
+    /** Sets the current controller state to a time multiplier state with a specified multiplier.
+     *
+     * @param cycleMultiplier The time multiplier to be used.
+     *
+     * @since 0.1
+     */
     public void setStateMultiplier(double cycleMultiplier){
         state = CycleState.MULTIPLIER;
         this.cycleMultiplier = cycleMultiplier;
     }
 
+    /** Sets the current cycle state to a specified day state with all parts individually defined.
+     *
+     * @param dayTime The day time in seconds.
+     * @param nightTime The night time in seconds.
+     * @param duskTime The dusk time in seconds.
+     * @param dawnTime The dawn time in seconds.
+     *
+     * @since 0.1
+     */
     public void setStateDefined(int dayTime, int nightTime, int duskTime, int dawnTime){
         state = CycleState.DEFINED;
+        this.dayTime = dayTime;
+        this.nightTime = nightTime;
+        this.duskTime = duskTime;
+        this.dawnTime = dawnTime;
     }
 
-    public void setStateGenerated(double longitude, int day){
+    /** Sets the current cycle state to a procedurally generated cycle based on a specific longitude and a day.
+     * This also takes in a cycle multiplier to multiply the length of the day with.
+     *
+     * @param longitude The latitude to base our cycles on.
+     * @param day The start day of our generated cycles.
+     * @param cycleMultiplier The time multiplier to be used.
+     *
+     * @since 0.1
+     */
+    public void setStateGenerated(double longitude, int day, int cycleMultiplier){
         state = CycleState.GENERATED;
+        this.longitude = longitude;
+        this.day = day;
+        this.cycleMultiplier = cycleMultiplier;
     }
 
 
