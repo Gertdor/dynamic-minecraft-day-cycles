@@ -1,12 +1,13 @@
+import Controllers.CycleController;
 import DataHandlers.DayCycle;
+import Utils.PropertyUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
-import org.yaml.snakeyaml.introspector.PropertyUtils;
 
 import java.util.List;
 
@@ -21,24 +22,31 @@ public class CycleEndListener implements Listener {
 
     private final List<CycleController> controllers;
 
+    private final Plugin plugin;
+
     /** Initiates the listener, allowing it to
      *
      */
-    public CycleEndListener(List<CycleController> controllers){
+    public CycleEndListener(List<CycleController> controllers, JavaPlugin plugin){
         this.controllers = controllers;
+        this.plugin = plugin;
 
     }
 
     @EventHandler
     public void endOfCycle(CycleEndEvent cycleEnd){
         World world = cycleEnd.getWorld();
-        String message = cycleEnd.getMessage(); //TODO: Use message
+        if (PropertyUtils.getInstance().isVerboseEvents()){
+            plugin.getLogger().info(cycleEnd.getMessage());
+        }
         for (CycleController worldController : controllers){
             if (worldController.controlsWorld(world)){
+                DayCycle tomorrow = worldController.getTomorrow();
+                int tickLength = PropertyUtils.getInstance().getTickLength();
+                CycleRunner runner = new CycleRunner(world, tomorrow, tickLength);
                 BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-                BukkitRunnable nextCycle = new CycleRunner(world, worldController.getTomorrow(),
-                        Utils.PropertyUtils.getInstance().getTickLength());
-                
+                scheduler.scheduleSyncRepeatingTask(plugin, runner, 0, tickLength);
+                return;
             }
         }
     }

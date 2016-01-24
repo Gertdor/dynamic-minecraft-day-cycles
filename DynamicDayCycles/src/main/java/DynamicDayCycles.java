@@ -6,6 +6,7 @@
  * @version 0.1
  * @since 2016-01-22
  */
+import Controllers.CycleController;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.HandlerList;
@@ -24,7 +25,7 @@ public final class DynamicDayCycles extends JavaPlugin{
         for (World w : Bukkit.getServer().getWorlds()){
             cycleControllers.add(new CycleController(w));
         }
-        this.getServer().getPluginManager().registerEvents(new CycleEndListener(cycleControllers), this);
+        this.getServer().getPluginManager().registerEvents(new CycleEndListener(cycleControllers, this), this);
     }
     @Override
     public void onDisable(){

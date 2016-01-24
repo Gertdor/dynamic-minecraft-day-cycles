@@ -11,8 +11,8 @@ import org.bukkit.event.HandlerList;
 public class CycleEndEvent extends Event {
 
     private static final HandlerList handlers  = new HandlerList();
-    private String message;
-    private World world;
+    private final String message;
+    private final World world;
 
     public CycleEndEvent(String message, World world){
         this.message = message;

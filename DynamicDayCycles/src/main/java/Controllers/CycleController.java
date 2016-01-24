@@ -1,4 +1,7 @@
+package Controllers;
+
 import DataHandlers.DayCycle;
+import Utils.CycleUtils;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -110,14 +113,18 @@ public class CycleController{
         switch (state){
             case MULTIPLIER:
                 int calcDayTime = (int) (600 * cycleMultiplier);
-                int calcNightTime = (int) (480 * cycleMultiplier);
+                int calcNightTime = (int) (420 * cycleMultiplier);
                 int calcDuskTime = (int) (90 * cycleMultiplier);
                 int calcDawnTime = (int) (90 * cycleMultiplier);
                 return (new DayCycle(calcDayTime, calcNightTime, calcDuskTime, calcDawnTime));
             case DEFINED:
                 return (new DayCycle(dayTime,nightTime,duskTime,dawnTime));
             case GENERATED:
-                break;
+                day++;
+                int genDayTime = (int) (CycleUtils.getInstance().calculateDayLength(day, longitude) * cycleMultiplier);
+                int genDuskAndDawnTime = (int) (CycleUtils.getInstance().approximateSunDeclination(day) * cycleMultiplier);
+                int genNightTime = (int) (1200 - (genDayTime + genDuskAndDawnTime) * cycleMultiplier);
+                return (new DayCycle(genDayTime, genNightTime, genDuskAndDawnTime, genDuskAndDawnTime));
         }
 
         throw new IllegalStateException("Cycle is in no state");

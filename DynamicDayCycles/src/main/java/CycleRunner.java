@@ -30,8 +30,6 @@ public class CycleRunner extends BukkitRunnable {
         dawnRate = 1800 / cycle.getDawnLength();
         duskRate = 1800 / cycle.getDuskLength();
         nightRate = 8400 / cycle.getNightLength();
-
-        timeToSet = world.getTime();
     }
 
     @Override
@@ -49,6 +47,7 @@ public class CycleRunner extends BukkitRunnable {
         if (timeToSet <= 24000){
             world.setTime((long) timeToSet);
         } else {
+            world.setTime((long) timeToSet - 24000);
             this.cancel();
             CycleEndEvent endEvent = new CycleEndEvent("End of day", world);
             Bukkit.getServer().getPluginManager().callEvent(endEvent);
