@@ -19,4 +19,5 @@ public final class DynamicDayCycles extends JavaPlugin{
     public void onDisable(){
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doLightCycle true");
     }
+
 }
