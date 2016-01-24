@@ -1,4 +1,7 @@
-import org.bukkit.Server;
+import Utils.CycleUtils;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitTask;
+import org.w3c.dom.events.EventListener;
 
 /** Controls the time flow of a Minecraft day through using one of three methods:
  * <ul>
@@ -24,13 +27,12 @@ import org.bukkit.Server;
  * @version 0.1
  * @since 2016-01-22
  */
-public class CycleController {
+public class CycleController{
 
-    private final Server server;
+    private final World world;
     private DayCycle today;
-    private DayCycle tomorrow;
     private CycleState state;
-    private int currentTime;
+    private BukkitTask runner;
 
     private double cycleMultiplier;
 
@@ -44,10 +46,12 @@ public class CycleController {
 
     /** Creates a new cycle controller object with a specified server to run on.
      * Defaults the state to a multiplier state with a time multiplier of 1.
-     * @param server
+     * @param world The world that this controller applies to.
+     *
+     * @since 0.1
      */
-    public CycleController(Server server){
-        this.server = server;
+    public CycleController(World world){
+        this.world = world;
         setStateMultiplier(1);
     }
 
@@ -96,7 +100,46 @@ public class CycleController {
     }
 
 
+    /** Gets the DayCycle for the next day, through one of the three methods. If using the generated cycle increases
+     * the day count by one as well.
+     *
+     * @return Tomorrow's day cycle.
+     *
+     * @since 0.1
+     */
+    public DayCycle getTomorrow(){
+        switch (state){
+            case MULTIPLIER:
+                int calcDayTime = (int) (600 * cycleMultiplier);
+                int calcNightTime = (int) (480 * cycleMultiplier);
+                int calcDuskTime = (int) (90 * cycleMultiplier);
+                int calcDawnTime = (int) (90 * cycleMultiplier);
+                return (new DayCycle(calcDayTime, calcNightTime, calcDuskTime, calcDawnTime));
+            case DEFINED:
+                return (new DayCycle(dayTime,nightTime,duskTime,dawnTime));
+            case GENERATED:
+                break;
+        }
+
+        throw new IllegalStateException("Cycle is in no state");
+    }
+
+    /** Enum to symbolise the three states that a time cycle can be calculated, either through a multiple of the
+     * standard Minecraft time, a defined time for the whole cycle, or with a generated cycle from a place and time.
+     */
     private enum CycleState{
         MULTIPLIER, DEFINED, GENERATED;
     }
+
+    /** Asks if this controller controls a world given that world's name.
+     *
+     * @param worldName The name of the queried world.
+     * @return True if this controller controls that world, false otherwise.
+     *
+     * @since 0.1
+     */
+    public boolean controlsWorld(String worldName){
+        return worldName.equals(world.getName());
+    }
+
 }
