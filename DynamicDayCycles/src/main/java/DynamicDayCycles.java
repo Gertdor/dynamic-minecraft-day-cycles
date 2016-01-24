@@ -8,6 +8,7 @@
  */
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -23,11 +24,12 @@ public final class DynamicDayCycles extends JavaPlugin{
         for (World w : Bukkit.getServer().getWorlds()){
             cycleControllers.add(new CycleController(w));
         }
+        this.getServer().getPluginManager().registerEvents(new CycleEndListener(), this);
     }
     @Override
     public void onDisable(){
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doLightCycle true");
-
+        HandlerList.unregisterAll(this);
     }
 
 }
