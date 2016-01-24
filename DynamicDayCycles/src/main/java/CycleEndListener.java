@@ -10,4 +10,15 @@ import org.bukkit.event.Listener;
  */
 public class CycleEndListener implements Listener {
 
+    /** Initiates the listener, allowing it to
+     *
+     */
+    public CycleEndListener(){
+
+    }
+
+    @EventHandler
+    public void endOfCycle(CycleEndEvent cycleEnd){
+
+    }
 }

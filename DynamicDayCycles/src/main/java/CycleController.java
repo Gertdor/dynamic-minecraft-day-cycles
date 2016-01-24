@@ -1,7 +1,6 @@
-import Utils.CycleUtils;
+import DataHandlers.DayCycle;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
-import org.w3c.dom.events.EventListener;
 
 /** Controls the time flow of a Minecraft day through using one of three methods:
  * <ul>
@@ -100,7 +99,7 @@ public class CycleController{
     }
 
 
-    /** Gets the DayCycle for the next day, through one of the three methods. If using the generated cycle increases
+    /** Gets the DataHandlers.DayCycle for the next day, through one of the three methods. If using the generated cycle increases
      * the day count by one as well.
      *
      * @return Tomorrow's day cycle.

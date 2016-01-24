@@ -1,3 +1,5 @@
+import DataHandlers.DayCycle;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -48,6 +50,8 @@ public class CycleRunner extends BukkitRunnable {
             world.setTime((long) timeToSet);
         } else {
             this.cancel();
+            CycleEndEvent endEvent = new CycleEndEvent("End of day", world);
+            Bukkit.getServer().getPluginManager().callEvent(endEvent);
         }
     }
 }

@@ -1,3 +1,5 @@
+package DataHandlers;
+
 /** Holds the length of a specific day, split into four parts. This is used to model a Minecraft 24-hour day and
  * to be able to define how long one part of the day can be in an easy way. Once a day cycle is created it can't
  * be altered to prevent unforeseen errors, such as defining the day as shorter than the time period that has already
