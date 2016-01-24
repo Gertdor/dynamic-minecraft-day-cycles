@@ -17,6 +17,8 @@ public class PropertyUtils {
         return  instance;
     }
 
-
+    public int getTickLength(){
+        return 5;
+    }
 
 }

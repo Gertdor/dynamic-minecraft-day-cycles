@@ -24,7 +24,7 @@ public final class DynamicDayCycles extends JavaPlugin{
         for (World w : Bukkit.getServer().getWorlds()){
             cycleControllers.add(new CycleController(w));
         }
-        this.getServer().getPluginManager().registerEvents(new CycleEndListener(), this);
+        this.getServer().getPluginManager().registerEvents(new CycleEndListener(cycleControllers), this);
     }
     @Override
     public void onDisable(){

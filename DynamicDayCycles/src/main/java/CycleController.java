@@ -141,4 +141,13 @@ public class CycleController{
         return worldName.equals(world.getName());
     }
 
+    /** Asks if this controller controls a world given that world's reference.
+     *
+     * @param world The reference to the world queried about.
+     * @return True if this controllers control that world, false otherwise.
+     *
+     * @since 0.1
+     */
+    public boolean controlsWorld(World world) { return this.world.equals(world); }
+
 }
