@@ -1,4 +1,4 @@
-package dataHandlers;
+package datahandlers;
 
 import controllers.CycleController;
 import org.bukkit.World;

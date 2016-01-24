@@ -1,6 +1,6 @@
-package eventSupport;
+package eventsupport;
 
-import dataHandlers.DayCycle;
+import datahandlers.DayCycle;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;

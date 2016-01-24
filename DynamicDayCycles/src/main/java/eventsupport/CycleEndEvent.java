@@ -1,4 +1,4 @@
-package eventSupport;
+package eventsupport;
 
 import org.bukkit.World;
 import org.bukkit.event.Event;

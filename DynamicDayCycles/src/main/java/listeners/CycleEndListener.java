@@ -1,7 +1,7 @@
 package listeners;
 
 import controllers.CycleController;
-import dataHandlers.DayCycle;
+import datahandlers.DayCycle;
 import utility.PropertyUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

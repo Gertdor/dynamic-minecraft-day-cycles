@@ -1,6 +1,6 @@
 package utility;
 
-import dataHandlers.Properties;
+import datahandlers.Properties;
 
 /** Singleton class to read and write to different property files used by the plugin.
  *

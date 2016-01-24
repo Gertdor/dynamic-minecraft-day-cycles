@@ -1,6 +1,6 @@
 package controllers;
 
-import dataHandlers.DayCycle;
+import datahandlers.DayCycle;
 import utility.CycleUtils;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
@@ -102,7 +102,7 @@ public class CycleController{
     }
 
 
-    /** Gets the dataHandlers.DayCycle for the next day, through one of the three methods. If using the generated cycle increases
+    /** Gets the datahandlers.DayCycle for the next day, through one of the three methods. If using the generated cycle increases
      * the day count by one as well.
      *
      * @return Tomorrow's day cycle.
