@@ -1,8 +1,13 @@
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-/**
- * Created by Markus Bergland on 22/01/2016.
+/** Listener for custom Bukkit event of DayChange to be used with custom minecraft day cycles. The events are sent
+ * through the runner and are then used by the controller
+ *
+ * @author Markus Bergland
+ * @version 0.1
+ * @since 2016-01-23
  */
-public class CycleEndListener {
+public class CycleEndListener implements Listener {
+
 }

@@ -1,5 +1,7 @@
+import Utils.CycleUtils;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitTask;
+import org.w3c.dom.events.EventListener;
 
 /** Controls the time flow of a Minecraft day through using one of three methods:
  * <ul>
@@ -25,12 +27,11 @@ import org.bukkit.scheduler.BukkitTask;
  * @version 0.1
  * @since 2016-01-22
  */
-public class CycleController {
+public class CycleController{
 
     private final World world;
     private DayCycle today;
     private CycleState state;
-    private int currentTime;
     private BukkitTask runner;
 
     private double cycleMultiplier;
@@ -102,7 +103,9 @@ public class CycleController {
     /** Gets the DayCycle for the next day, through one of the three methods. If using the generated cycle increases
      * the day count by one as well.
      *
-     * @return Tomorrow's cycle day with
+     * @return Tomorrow's day cycle.
+     *
+     * @since 0.1
      */
     public DayCycle getTomorrow(){
         switch (state){
@@ -118,8 +121,7 @@ public class CycleController {
                 break;
         }
 
-        //TODO: Fix case where none are present.
-        return null;
+        throw new IllegalStateException("Cycle is in no state");
     }
 
     /** Enum to symbolise the three states that a time cycle can be calculated, either through a multiple of the
@@ -127,6 +129,17 @@ public class CycleController {
      */
     private enum CycleState{
         MULTIPLIER, DEFINED, GENERATED;
+    }
+
+    /** Asks if this controller controls a world given that world's name.
+     *
+     * @param worldName The name of the queried world.
+     * @return True if this controller controls that world, false otherwise.
+     *
+     * @since 0.1
+     */
+    public boolean controlsWorld(String worldName){
+        return worldName.equals(world.getName());
     }
 
 }
