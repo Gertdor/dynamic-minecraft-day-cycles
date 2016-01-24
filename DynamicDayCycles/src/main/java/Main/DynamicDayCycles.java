@@ -1,4 +1,4 @@
-/** A plugin to have a changeable
+package main; /** A plugin to have a changeable
  *
  *
  * @author Sebastian Norlin
@@ -6,7 +6,8 @@
  * @version 0.1
  * @since 2016-01-22
  */
-import Controllers.CycleController;
+import controllers.CycleController;
+import listeners.CycleEndListener;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.HandlerList;
@@ -22,6 +23,7 @@ public final class DynamicDayCycles extends JavaPlugin{
     @Override
     public void onEnable(){
         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "gamerule doLightCycle false");
+        //TODO: Load default controllers instead of creating new ones.
         for (World w : Bukkit.getServer().getWorlds()){
             cycleControllers.add(new CycleController(w));
         }

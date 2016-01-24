@@ -1,8 +1,6 @@
-package Utils;
+package utility;
 
-import DataHandlers.PluginProperties;
-import DataHandlers.Properties;
-import DataHandlers.WorldProperties;
+import dataHandlers.Properties;
 
 /** Singleton class to read and write to different property files used by the plugin.
  *
@@ -44,6 +42,9 @@ public class PropertyUtils {
         return props.tickLength();
     }
 
+    /** Checks if events should write out their content in the logger or not.
+     * @return True if events should write out their message, false otherwise.
+     */
     public boolean isVerboseEvents(){
         return props.verboseEvents();
     }

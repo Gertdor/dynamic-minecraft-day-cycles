@@ -1,4 +1,4 @@
-package DataHandlers;
+package dataHandlers;
 
 /** Interface for the properties of the main plugin, such as user information, default messages, and so on.
  * Work in progress!

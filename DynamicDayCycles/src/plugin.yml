@@ -1,4 +1,6 @@
-    name: Dynamic day cycles
-    main: main.java.DynamicDayCycles
+    name: main.DynamicDayCycles
+    main: main.java.main.DynamicDayCycles
     version: 0.1
+    author: Bergland & Gertdor
+
 

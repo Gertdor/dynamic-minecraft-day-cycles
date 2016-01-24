@@ -1,6 +1,8 @@
-import Controllers.CycleController;
-import DataHandlers.DayCycle;
-import Utils.PropertyUtils;
+package listeners;
+
+import controllers.CycleController;
+import dataHandlers.DayCycle;
+import utility.PropertyUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;

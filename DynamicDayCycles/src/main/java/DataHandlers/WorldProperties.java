@@ -1,6 +1,6 @@
-package DataHandlers;
+package dataHandlers;
 
-import Controllers.CycleController;
+import controllers.CycleController;
 import org.bukkit.World;
 
 import java.util.List;

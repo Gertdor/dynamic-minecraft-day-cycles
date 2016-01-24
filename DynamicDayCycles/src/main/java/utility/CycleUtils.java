@@ -1,4 +1,4 @@
-package Utils;
+package utility;
 
 /**
  *A utility class for approximating values related to length of a day.
