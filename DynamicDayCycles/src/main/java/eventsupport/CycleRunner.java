@@ -28,25 +28,41 @@ public class CycleRunner extends BukkitRunnable {
         this.cycle = cycle;
         this.ticksBtwRuns = ticksBtwRuns;
 
-        dayRate = 12000 / cycle.getDayLength();
-        dawnRate = 1800 / cycle.getDawnLength();
-        duskRate = 1800 / cycle.getDuskLength();
-        nightRate = 8400 / cycle.getNightLength();
+        dayRate = cycle.getDayLength() != 0 ? 12000 / cycle.getDayLength() : 0;
+        dawnRate = cycle.getDawnLength() != 0 ? 1800 / cycle.getDawnLength(): 0;
+        duskRate = cycle.getDuskLength() != 0 ? 1800 / cycle.getDuskLength() : 0;
+        nightRate = cycle.getNightLength() != 0 ? 8400 / cycle.getNightLength() : 0;
     }
 
     @Override
     public void run() {
         int wTime = (int) world.getTime();
         if (wTime < 12000){
-            timeToSet += ticksBtwRuns * dayRate;
+            if (dayRate == 0){
+                timeToSet = 12000;
+            } else {
+                timeToSet += ticksBtwRuns * dayRate;
+            }
         } else if (wTime < 13800){
-            timeToSet += ticksBtwRuns * duskRate;
+            if (duskRate == 0){
+                timeToSet = 13800;
+            } else {
+                timeToSet += ticksBtwRuns * duskRate;
+            }
         } else if (wTime < 22200){
-            timeToSet += ticksBtwRuns * dawnRate;
-        } else {
-            timeToSet += ticksBtwRuns * dawnRate;
+            if (nightRate == 0){
+                timeToSet = 22200;
+            } else {
+                timeToSet += ticksBtwRuns * nightRate;
+            }
+        } else{
+            if (dawnRate == 0){
+                timeToSet = 24000;
+            } else {
+                timeToSet += ticksBtwRuns * dawnRate;
+            }
         }
-        if (timeToSet <= 24000){
+        if (timeToSet < 24000){
             world.setTime((long) timeToSet);
         } else {
             world.setTime((long) timeToSet - 24000);

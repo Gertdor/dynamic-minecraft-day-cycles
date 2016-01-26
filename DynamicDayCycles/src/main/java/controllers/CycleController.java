@@ -125,9 +125,10 @@ public class CycleController{
                 int genDuskAndDawnTime = (int) (CycleUtils.getInstance().approximateSunDeclination(day) * cycleMultiplier);
                 int genNightTime = (int) (1200 - (genDayTime + genDuskAndDawnTime) * cycleMultiplier);
                 return (new DayCycle(genDayTime, genNightTime, genDuskAndDawnTime, genDuskAndDawnTime));
+            default:
+                throw new IllegalStateException("Cycle is in no state");
         }
 
-        throw new IllegalStateException("Cycle is in no state");
     }
 
     /** Enum to symbolise the three states that a time cycle can be calculated, either through a multiple of the

@@ -29,7 +29,7 @@ public class CommandController implements CommandExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
 
         if (command.getName().equalsIgnoreCase("ddc")){
-            if (! commandSender.hasPermission("ddc.use")){
+            if (! commandSender.hasPermission("ddc.basic")){
                 commandSender.sendMessage("You don't have permission to use /ddc commands.");
                 return false;
             }
@@ -106,8 +106,17 @@ public class CommandController implements CommandExecutor {
         try {
             value = Double.parseDouble(args[2]);
         } catch (NumberFormatException nfe) {
-            cmdSender.sendMessage("Faulty arguments for /ddc use mul #multiplier ." +
-                    "Expected a number as #multiplier, found a string.");
+            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#0.01-72.§r" +
+                    "Expected a number, found a string.");
+            return false;
+        }
+
+        if (value < 0){
+            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#0.01-72§r. Expected a positive number," +
+                    " found a negative number.");
+            return false;
+        } else if (value < 0.01 || value > 72){
+            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#0.01-72§r. Expected number out of range");
             return false;
         }
 
@@ -120,7 +129,7 @@ public class CommandController implements CommandExecutor {
                     return true;
                 }
             }
-            cmdSender.sendMessage("Fault arguments for /ddc use mul #multiplier world. Expected an existing world as" +
+            cmdSender.sendMessage("Fault arguments for /ddc use mul #multiplier §4world§r. Expected an existing world as" +
                     " world, found no world with that name.");
             return false;
         }
@@ -133,7 +142,7 @@ public class CommandController implements CommandExecutor {
                 }
             }
         } else {
-            cmdSender.sendMessage("Faulty arguments for /ddc use mul #multiplier world. " +
+            cmdSender.sendMessage("Faulty arguments for /ddc use mul #multiplier §4world§r. " +
                     "Expected a world, found none.");
         }
 
