@@ -14,6 +14,13 @@
         permission-message: You don't have permission to use /ddc commands
 
     permissions:
+      ddc.*:
+        description: Allows usage of all Dynamic Day Cycle commands.
+          children:
+            ddc.basic: true
+            ddc.use: true
+            ddc.pause: true
+          default: op
       ddc.basic:
         description: Allows usage of the Dynamic Day Cycle plugin
         default: op

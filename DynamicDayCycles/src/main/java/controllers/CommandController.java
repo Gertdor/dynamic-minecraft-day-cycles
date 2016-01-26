@@ -70,6 +70,15 @@ public class CommandController implements CommandExecutor {
 
     }
 
+    /** Reads the /ddc use command, and then calls the appropriate function for it.
+     *
+     * @param cmdSender The sender of the command.
+     * @param label The label of the command.
+     * @param args The arguments of the command.
+     * @return True if the command is executed, false otherwise.
+     *
+     * @since 0.1
+     */
     private boolean onUseCommand(CommandSender cmdSender, String label, String[] args){
         String type = args[1];
         switch (type){
@@ -86,6 +95,15 @@ public class CommandController implements CommandExecutor {
         }
     }
 
+    /** Reads and executes the /ddc use mul command, including handling too many and too few arguments, as well
+     * as who the sender is and their permissions.
+     * @param cmdSender The sender of the command.
+     * @param label The label of the command.
+     * @param args The arguments of the command.
+     * @return True if the command is executed, false otherwise.
+     *
+     * @since 0.1
+     */
     private boolean onUseMul(CommandSender cmdSender, String label, String[] args) {
 
         if (!cmdSender.hasPermission("ddc.use.mul")) {
