@@ -48,8 +48,7 @@ public class CycleEndListener implements Listener {
                 DayCycle tomorrow = worldController.getTomorrow();
                 int tickLength = PropertyUtils.getInstance().getTickLength();
                 CycleRunner runner = new CycleRunner(world, tomorrow, tickLength);
-                BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-                scheduler.scheduleSyncRepeatingTask(plugin, runner, 0, tickLength);
+                runner.runTaskTimer(plugin, 0, tickLength);
                 return;
             }
         }
