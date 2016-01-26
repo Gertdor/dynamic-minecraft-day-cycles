@@ -6,6 +6,7 @@ package main; /** A plugin to have a changeable
  * @version 0.1
  * @since 2016-01-22
  */
+import controllers.CommandController;
 import controllers.CycleController;
 import listeners.CycleEndListener;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public final class DynamicDayCycles extends JavaPlugin{
 
-    private List<CycleController> cycleControllers = new ArrayList<>();
+    private final List<CycleController> cycleControllers = new ArrayList<>();
 
     @Override
     public void onEnable(){
@@ -28,6 +29,7 @@ public final class DynamicDayCycles extends JavaPlugin{
             cycleControllers.add(new CycleController(w));
         }
         this.getServer().getPluginManager().registerEvents(new CycleEndListener(cycleControllers, this), this);
+        this.getCommand("ddc").setExecutor(new CommandController(this, cycleControllers));
     }
     @Override
     public void onDisable(){

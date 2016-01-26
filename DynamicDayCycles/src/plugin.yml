@@ -1,6 +1,41 @@
-    name: main.DynamicDayCycles
+    name: DynamicDayCycles
     main: main.java.main.DynamicDayCycles
+
     version: 0.1
-    author: Bergland & Gertdor
+    description: A plugin granting complete control over the Minecraft day cycles.
 
+    authors: [Bergland, Gertdor]
+    website: https://github.com/Gertdor/dynamic-minecraft-day-cycles
 
+    commands:
+      ddc:
+        description: Calls a function from the Dynamic Day Cycle plugin
+        permission: ddc.basic
+        permission-message: You don't have permission to use /ddc commands
+
+    permissions:
+      ddc.basic:
+        description: Allows usage of the Dynamic Day Cycle plugin
+        default: op
+      ddc.pause:
+        description: Allows access to the Pause functionality of DDC
+        default: op
+      ddc.use:
+        description: Allows the user to set day cycle
+        children:
+          ddc.use.mul: true
+          ddc.use.set: true
+          ddc.use.gen: true
+        default: op
+      ddc.use.mul:
+        description: Allows the user to set day cycle using a multiplier
+        default: op
+      ddc.use.set:
+        description: Allows the user to set day cycle by setting all cycle parts
+        default: op
+      ddc.use.gen:
+        description: Allows the user to set day cycle using a generator
+        default: op
+      ddc.next:
+        description: Allows the user to toggle to the next day
+        default: op
