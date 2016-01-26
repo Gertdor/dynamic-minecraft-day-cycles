@@ -85,7 +85,7 @@ public class CommandController implements CommandExecutor {
             case "mul":
                 return onUseMul(cmdSender, label, args);
             case "set":
-                return true;
+                return onUseSet(cmdSender, label, args);
             case "gen":
                 return true;
             default:
@@ -130,11 +130,12 @@ public class CommandController implements CommandExecutor {
         }
 
         if (value < 0){
-            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#0.01-72§r. Expected a positive number," +
+            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#multiplier§r. Expected a positive number," +
                     " found a negative number.");
             return false;
         } else if (value < 0.01 || value > 72){
-            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#0.01-72§r. Expected number out of range");
+            cmdSender.sendMessage("Faulty argument for /ddc use mul §4#miltiplier§r. Expected number in range 0.01" +
+                    " to 72, found " + value);
             return false;
         }
 
@@ -144,6 +145,10 @@ public class CommandController implements CommandExecutor {
             for (CycleController controller : cycleControllers) {
                 if (controller.controlsWorld(world)) {
                     controller.setStateMultiplier(value);
+                    cmdSender.sendMessage("Successfully set time cycle in " +  world + " to use a multiplied time. " +
+                            "Multiplier is now " + value + ", and total day length is now " + value * 1200 +
+                            "seconds long.");
+                    cmdSender.sendMessage("Use /ddc tomorrow to fast forward time to new cycle.");
                     return true;
                 }
             }
@@ -157,15 +162,111 @@ public class CommandController implements CommandExecutor {
             for (CycleController controller : cycleControllers) {
                 if (controller.controlsWorld(pWorld)) {
                     controller.setStateMultiplier(value);
+                    cmdSender.sendMessage("Successfully set time cycle in " +  pWorld.getName() + " to use a " +
+                            "multiplied time. Multiplier is now " + value + ", and total day length is now " +
+                            value * 1200 + "seconds long.");
+                    cmdSender.sendMessage("Use /ddc tomorrow to fast forward time to new cycle.");
+                    return true;
                 }
             }
         } else {
             cmdSender.sendMessage("Faulty arguments for /ddc use mul #multiplier §4world§r. " +
                     "Expected a world, found none.");
+            return false;
         }
 
         return false;
 
 
+    }
+
+    /** Reads and executes the /ddc use set command, including handling too many and too few arguments, as well
+     * as who the sender is and their permissions.
+     * @param cmdSender The sender of the command.
+     * @param label The label of the command.
+     * @param args The arguments of the command.
+     * @return True if the command is executed, false otherwise.
+     *
+     * @since 0.1
+     */
+    private boolean onUseSet(CommandSender cmdSender, String label, String[] args){
+        if (!cmdSender.hasPermission("ddc.use.set")){
+            cmdSender.sendMessage("You don't have permission to use /ddc use set");
+            return false;
+        }
+        if (args.length < 6){
+            cmdSender.sendMessage("Too few arguments for /ddc use set #day #dusk #night #dawn [world]. Should be at " +
+                    "least 6, you had " + (args.length - 2));
+            return false;
+        } else if (args.length > 7){
+            cmdSender.sendMessage("Too many arguments for /ddc use set #day #dusk #night #dawn [world]. Should be at " +
+                    "most 7, you had " + (args.length - 2));
+        }
+
+        int dayLength;
+        int duskLength;
+        int nightLength;
+        int dawnLength;
+
+        try {
+            dayLength = Integer.parseInt(args[3]);
+            duskLength = Integer.parseInt(args[4]);
+            nightLength = Integer.parseInt(args[5]);
+            dawnLength = Integer.parseInt(args[6]);
+        } catch (NumberFormatException nfe) {
+            cmdSender.sendMessage("Faulty argument(s) for /ddc use set §4#day #dusk #night #dawn§r [world]. " +
+                    "Expected numbers, found at least 1 non-number.");
+            return false;
+        }
+
+        if (dayLength < 0 || duskLength < 0 || nightLength < 0 || dawnLength < 0){
+            cmdSender.sendMessage("Faulty argument(s) for /ddc use set §4#day #dusk #night #dawn§r [world]. " +
+                    "Expected positive numbers, found at least 1 negative number.");
+            return false;
+        } else if (dayLength > Integer.MAX_VALUE || duskLength > Integer.MAX_VALUE || nightLength > Integer.MAX_VALUE
+                || dawnLength > Integer.MAX_VALUE){
+            cmdSender.sendMessage("Faulty argument(s) for /ddc use set §4#day #dusk #night #dawn§r [world]. " +
+                    "Expected numbers below " + Integer.MAX_VALUE + ". Found at least 1 number above.");
+            return false;
+        }
+
+        if (args.length == 7) {
+            String world = args[6];
+            for (CycleController controller : cycleControllers) {
+                if (controller.controlsWorld(world)) {
+                    controller.setStateDefined(dayLength, nightLength, duskLength, dawnLength);
+                    cmdSender.sendMessage("Successfully set the day cycle in " +  world + " to use a" +
+                            "set time. Length is now " + dayLength + " (day length), " + duskLength + " (dusk length), "
+                            + nightLength + " (night length), " + dawnLength + " (dawn length). Total day cycle is" +
+                            "now " + (dayLength + duskLength + nightLength + dawnLength) + " seconds long.");
+                    cmdSender.sendMessage("Use /ddc tomorrow to fast forward time to new cycle.");
+                    return true;
+                }
+            }
+            cmdSender.sendMessage("Faulty argument(s) for /ddc use set #day #dusk #night #dawn §4world§r. " +
+                    "Expected an existing world as world, found no world with that name.");
+            return false;
+        }
+        if (cmdSender instanceof Player) {
+            World pWorld = ((Player) cmdSender).getWorld();
+
+            for (CycleController controller : cycleControllers) {
+                if (controller.controlsWorld(pWorld)) {
+                    controller.setStateDefined(dayLength, nightLength, duskLength, dawnLength);
+                    cmdSender.sendMessage("Successfully set the day cycle in " +  pWorld.getName() + " to use a" +
+                            "set time. Length is now " + dayLength + " (day length), " + duskLength + " (dusk length), "
+                            + nightLength + " (night length), " + dawnLength + " (dawn length). Total day cycle is" +
+                            "now " + (dayLength + duskLength + nightLength + dawnLength) + " seconds long.");
+                    cmdSender.sendMessage("Use /ddc tomorrow to fast forward time to new cycle.");
+                    return true;
+                }
+            }
+        } else {
+            cmdSender.sendMessage("Faulty arguments for /ddc use set #day #dusk #night #dawn §4world§r. " +
+                    "Expected a world, found none.");
+            return false;
+        }
+
+        return false;
     }
 }
